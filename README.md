@@ -95,6 +95,3 @@ merge-pull-mcp-app/
 └── tsconfig.server.json # TypeScript config (server)
 ```
 
-## License
-
-ISC
