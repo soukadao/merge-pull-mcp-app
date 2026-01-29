@@ -1,0 +1,121 @@
+{
+  "model": "claude-opus-4-5-20251101",
+  "env": {
+    "ENABLE_TOOL_SEARCH": "true"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "excludedCommands": ["git", "gh", "docker"],
+    "allowUnsandboxedCommands": true,
+    "network": {
+      "allowUnixSockets": ["/var/run/docker.sock"],
+      "allowLocalBinding": true
+    },
+    "enableWeakerNestedSandbox": false
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(git branch:*)",
+      "Bash(git commit:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git status)",
+      "Bash(git switch:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh issue comment:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(mkdir:*)",
+      "Edit",
+      "SlashCommand",
+      "Write",
+      "Skill",
+      "mcp__github__add_issue_comment",
+      "mcp__github__create_branch",
+      "mcp__github__create_or_update_file",
+      "mcp__github__create_pull_request",
+      "mcp__github__delete_file",
+      "mcp__github__issue_read",
+      "mcp__github__list_branches",
+      "mcp__github__list_issues",
+      "mcp__github__list_pull_requests",
+      "mcp__github__search_issues",
+      "mcp__github__search_pull_requests",
+      "mcp__github__update_pull_request",
+      "mcp__github__update_pull_request_branch",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__chrome-devtools__get_console_message",
+      "mcp__chrome-devtools__get_network_request",
+      "mcp__chrome-devtools__list_console_messages",
+      "mcp__chrome-devtools__list_network_requests",
+      "mcp__chrome-devtools__performance_analyze_insight",
+      "mcp__chrome-devtools__performance_start_trace",
+      "mcp__chrome-devtools__performance_stop_trace"
+    ],
+    "ask": [
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(gh issue close:*)",
+      "Bash(gh issue reopen:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm run:*)",
+      "Bash(npx:*)",
+      "Bash(rm:*)"
+    ],
+    "deny": [
+      "Bash(mv:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(git add -A)",
+      "Bash(git add --all)",
+      "Bash(git add -f)",
+      "Bash(git add -force)",
+      "Bash(gh:*)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "NotebookEdit",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "additionalDirectories": [],
+    "defaultMode": "acceptEdits",
+    "disableBypassPermissionsMode": "disable"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -c \"import json, sys; data=json.load(sys.stdin); path=data.get('tool_input',{}).get('file_path',''); sys.exit(2 if any(p in path for p in ['.env', 'pnpm-lock.yaml', '.git/']) else 0)\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [],
+    "Notification": [],
+    "UserPromptSubmit": [],
+    "Stop": [],
+    "SubagentStop": [],
+    "PreCompact": [],
+    "SessionStart": [],
+    "SessionEnd": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh",
+    "padding": 0
+  },
+  "enabledMcpjsonServers": ["github", "playwright", "chrome-devtools"],
+  "disabledMcpjsonServers": []
+}
